@@ -1,0 +1,923 @@
+HomeScreen未解决的问题：
+图片封面svg导入
+Font 
+
+改边距
+
+
+
+
+
+这是我现在Reading Screen的界面代码，我有这样几个要求，请你帮我完成，非常感谢。1. chapterTitle的大小是下面FooterText字体大小和色号都使用#848484。2. Chapter Title和Footer Text固定在页面顶部和底部；textContent文本框大小固定。
+我会给你dev mode的一些数据参考。因为设备屏幕大小不同，所以请你把尺寸按照设计稿里的比例进行转换，就像你在HomeScreen里做的那样
+整体page：
+width: 428px;
+height: 926px;
+background: #F8F8F8;
+
+Chapter Name：
+width: 70px;
+height: 30px;
+flex-shrink: 0;
+color: #848484;
+font-family: "Times New Roman";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 36px; /* 300% */
+
+ContentText
+width: 374px;
+height: 813px;
+flex-shrink: 0;
+
+overflow: hidden;
+color: #000;
+text-overflow: ellipsis;
+white-space: nowrap;
+font-family: "Times New Roman";
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 36px; /* 180% */
+
+Footer：
+Time：
+width: 70px;
+height: 30px;
+flex-shrink: 0;
+color: #848484;
+font-family: "Times New Roman";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 36px; /* 300% */
+
+XX/YY
+width: 39px;
+height: 30px;
+flex-shrink: 0;
+color: #848484;
+font-family: "Times New Roman";
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 36px; /* 300% */
+
+
+
+
+
+这是我现在的reading screen代码：
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+const ReadingScreen = () => {
+  const [showToolBar, setShowToolBar] = useState(false);
+
+  const handlePress = () => {
+    setShowToolBar(!showToolBar);
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.chapterTitle}>Chapter Name</Text>
+      </View>
+      <TouchableOpacity style={styles.contentContainer} onPress={handlePress}>
+        <Text style={styles.textContent}>
+          “Eminent in his field yet relatively little known to the wider public, Bruner was one of those people whose ideas shape culture in ways most of us are barely aware of. He had already backed one revolution in his field, in the 1950s, when as a professor at Harvard he helped lead a rebellion against radical behaviorism, then the dominant school in American psychology. Behaviorism, championed by his Harvard colleague B. F. Skinner, sought to limit psychology to that which can be scientifically and empirically observed—which is to say, behavior. It rejected anything so vague and fuzzy as the mind, along with such related concepts as intentions, beliefs, and desires. In Skinner’s view, the mind is a black box; humans, like any other organism, can be properly understood only through objectively observable behaviors which various stimuli produce. To consider anything else would be “unscientific.”
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>Time</Text>
+        <Text style={styles.footerText}>XX/YY</Text>
+      </View>
+      {showToolBar && (
+        <View style={styles.toolBar}>
+          <TouchableOpacity style={styles.toolButton}>
+            <Text>Contents</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.toolButton}>
+            <Text>Progress</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.toolButton}>
+            <Text>Multimodal</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.toolButton}>
+            <Text>Text Setting</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+  },
+  header: {
+    width: '100%',
+    height: height * 0.05, // 固定顶部高度
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chapterTitle: {
+    color: '#848484',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.036, 
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.005,
+  },
+  textContent: {
+    width: '100%',
+    height: height * 0.75,
+    color: '#000',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.05, // 20px
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+    textAlign: 'justify',
+    marginVertical: height * 0.01, // 你可以在此处添加垂直边距
+  },
+  footer: {
+    width: '100%',
+    height: height * 0.08, // 固定底部高度
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.05,
+    backgroundColor: '#F8F8F8',
+    position: 'absolute',
+    bottom: 0,
+  },
+  footerText: {
+    color: '#848484',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.036, 
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+  },
+  toolBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: height * 0.07,
+    backgroundColor: '#FFF',
+    borderTopWidth: 1,
+    borderTopColor: '#DDD',
+  },
+  toolButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+});
+
+export default ReadingScreen;
+
+我现在要修改toolbar格式：
+toolbar:
+display: flex;
+width: 428px;
+height: 93px;
+padding: 20px 0px;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex-shrink: 0;
+border-radius: 50px;
+background: #FFF;
+4个部分分别用4个可点按的svg实现：
+Row layout:
+display: flex;
+width: 376px;
+padding: 0px 32px;
+justify-content: space-between;
+align-items: center;
+路径为
+assets/toolbar/content.svg
+assets/toolbar/multimodality.svg
+assets/toolbar/progress.svg
+assets/toolbar/text setting.svg
+
+未选中时：
+颜色：#667080
+选中时修改svg颜色为：
+颜色：#A8ADB7
+
+
+
+
+
+
+
+
+App.js
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './components/HomeScreen';
+import ReadingScreen from './components/ReadingScreen';
+import { NewLineKind, isLeftHandSideExpression } from 'typescript'
+import { RevealFromBottomAndroid } from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/TransitionPresets'
+
+const Stack = createStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Reading" component={ReadingScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
+
+const { getDefaultConfig } = require('@expo/metro-config');
+
+module.exports = (() => {
+  const config = getDefaultConfig(__dirname);
+
+  const { transformer, resolver } = config;
+
+  config.transformer = {
+    ...transformer,
+    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+  };
+  config.resolver = {
+    ...resolver,
+    assetExts: resolver.assetExts.filter(ext => ext !== 'svg'),
+    sourceExts: [...resolver.sourceExts, 'svg'],
+  };
+
+  return config;
+})();
+
+
+
+
+
+overlaycontainer做以下改动
+1. 高度自适应具体内容。
+2. 和底部不要有距离。 
+3. 顶部border radius为36，但底部为0。
+4. overlaycontainer可滑动 
+
+toolbar做以下改动
+1.阅读界面里，toolbar点按再出现
+
+
+整体滑块条：
+display: flex;
+width: 342px;
+padding-right: 199px;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+gap: 10px;
+
+border-radius: 20px;
+background: rgba(218, 218, 218, 0.39);
+
+滑块左边：
+width: 143px;
+height: 36px;
+flex-shrink: 0;
+background: #DADADA;
+
+滑块右边：
+display: flex;
+width: 342px;
+padding-right: 199px;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+gap: 10px;
+border-radius: 20px;
+background: rgba(218, 218, 218, 0.39);
+
+滑块：
+width: 36px;
+height: 36px;
+flex-shrink: 0;
+border-radius: 108px;
+background: #FFF;
+box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+字体：
+color: #667080;
+font-family: Mulish;
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+
+我会导出左、右箭头的svg
+
+color options：
+row layout
+display: flex;
+width: 240px;
+justify-content: space-between;
+align-items: flex-start;
+
+white：
+width: 48px;
+height: 48px;
+flex-shrink: 0;
+border-radius: 108px;
+background: #F8F8F8;
+
+green：
+width: 48px;
+height: 48px;
+flex-shrink: 0;
+border-radius: 108px;
+background: #CCF0CF;
+
+yellow：
+width: 48px;
+height: 48px;
+flex-shrink: 0;
+border-radius: 108px;
+background: #F7F0DF;
+
+black：
+width: 48px;
+height: 48px;
+flex-shrink: 0;
+border-radius: 108px;
+background: #494949;
+
+pageswitch
+display: flex;
+width: 79px;
+height: 51px;
+padding: 13px 27px;
+justify-content: center;
+align-items: center;
+border-radius: 16px;
+background: #F1F1F1;
+
+FontSize：
+row layout
+display: flex;
+align-items: flex-start;
+gap: 20px;
+
+FontDecrease：
+display: flex;
+width: 116px;
+padding: 6px 0px;
+justify-content: center;
+align-items: center;
+border-radius: 24px;
+background: #F1F1F1;
+
+FontIncrease：
+display: flex;
+width: 116px;
+padding: 6px 41px 6px 45px;
+justify-content: flex-end;
+align-items: center;
+border-radius: 24px;
+background: #F1F1F1;
+
+Fontfamily：
+display: flex;
+width: 376px;
+padding: 0px 5px;
+justify-content: space-between;
+align-items: center;
+
+Times New Roman:
+color: #000;
+font-family: "Times New Roman";
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 36px; /* 180% */
+
+
+Icon：
+width: 30px;
+height: 30px;
+flex-shrink: 0;
+
+Line:
+width: 371px;
+height: 0.5px;
+background: rgba(102, 112, 128, 0.25);
+
+Align:
+Row Layout
+display: flex;
+align-items: center;
+gap: 18px;
+
+Align Left:
+display: flex;
+width: 108px;
+height: 48px;
+justify-content: center;
+align-items: center;
+
+Align Middle:
+display: flex;
+width: 108px;
+height: 48px;
+justify-content: center;
+align-items: center;
+
+Align Right:
+display: flex;
+width: 108px;
+height: 48px;
+justify-content: center;
+align-items: center;
+
+Layout:
+display: flex;
+width: 359px;
+justify-content: space-between;
+align-items: flex-start;
+
+Layout1:
+display: flex;
+width: 108px;
+height: 48px;
+padding: 6px 0px;
+justify-content: center;
+align-items: center;
+flex-shrink: 0;
+
+Layout2:
+display: flex;
+width: 108px;
+height: 48px;
+padding: 6px 0px;
+justify-content: center;
+align-items: center;
+flex-shrink: 0;
+
+Layout3:
+display: flex;
+width: 108px;
+height: 48px;
+padding: 6px 37.5px 6px 40.5px;
+justify-content: center;
+align-items: center;
+flex-shrink: 0;
+
+
+
+1.
+这是我现在ReadingScreen的代码：
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import ContentScreen from './Contents';
+import MultimodalScreen from './Multimodal';
+import ProgressScreen from './Progress';
+import TextSettingScreen from './TextSetting';
+import ContentIcon from '../assets/toolbar/content.svg';
+import MultimodalIcon from '../assets/toolbar/multimodality.svg';
+import ProgressIcon from '../assets/toolbar/progress.svg';
+import TextSettingIcon from '../assets/toolbar/text_setting.svg';
+
+const { width, height } = Dimensions.get('window');
+
+const ReadingScreen = () => {
+  const [showToolBar, setShowToolBar] = useState(false);
+  const [selectedButton, setSelectedButton] = useState<string | null>(null);
+
+  const handlePress = () => {
+    setShowToolBar(!showToolBar);
+    setSelectedButton(null);
+  };
+
+  const handleButtonPress = (button: string) => {
+    setSelectedButton(button);
+  };
+
+  const getIconColor = (button: string) => (selectedButton === button ? '#A8ADB7' : '#667080');
+
+  return (
+    <TouchableWithoutFeedback onPress={handlePress}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.chapterTitle}>Chapter Name</Text>
+        </View>
+        <TouchableOpacity style={styles.contentContainer} onPress={handlePress}>
+          <Text style={styles.textContent}>
+            “Emminent in his field yet relatively little known to the wider public, Bruner was one of those people whose ideas shape culture in ways most of us are barely aware of. He had already backed one revolution in his field, in the 1950s, when as a professor at Harvard he helped lead a rebellion against radical behaviorism, then the dominant school in American psychology.
+            {"\n\n"}
+            Behaviorism, championed by his Harvard colleague B. F. Skinner, sought to limit psychology to that which can be scientifically and empirically observed—which is to say, behavior. It rejected anything so vague and fuzzy as the mind, along with such related concepts as intentions, beliefs, and desires. In Skinner’s view, the mind is a black box; humans, like any other organism, can be properly understood only through objectively observable behaviors which various stimuli produce. To consider anything else would be “unscientific.”
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Time</Text>
+          <Text style={styles.footerText}>XX/YY</Text>
+        </View>
+        {selectedButton && (
+          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <ScrollView style={styles.overlayContainer}>
+              {selectedButton === 'contents' && <ContentScreen />}
+              {selectedButton === 'multimodal' && <MultimodalScreen />}
+              {selectedButton === 'progress' && <ProgressScreen />}
+              {selectedButton === 'textSetting' && <TextSettingScreen />}
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        )}
+        {showToolBar && (
+          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <View style={styles.toolBar}>
+              <View style={styles.toolButtonRow}>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('contents')}>
+                  <ContentIcon width={30} height={30} fill={getIconColor('contents')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('progress')}>
+                  <ProgressIcon width={30} height={30} fill={getIconColor('progress')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('multimodal')}>
+                  <MultimodalIcon width={26} height={26} fill={getIconColor('multimodal')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('textSetting')}>
+                  <TextSettingIcon width={26} height={26} fill={getIconColor('textSetting')} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+  },
+  header: {
+    width: '100%',
+    height: height * 0.05, // 固定顶部高度
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chapterTitle: {
+    color: '#848484',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.036, 
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.001,
+  },
+  textContent: {
+    width: '100%',
+    height: height * 0.75,
+    color: '#000',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.05, // 20px
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+    textAlign: 'justify',
+    marginVertical: height * 0.001, // 你可以在此处添加垂直边距
+  },
+  footer: {
+    width: '100%',
+    height: height * 0.08, // 固定底部高度
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.05,
+    backgroundColor: '#F8F8F8',
+    position: 'absolute',
+    bottom: 0,
+  },
+  footerText: {
+    color: '#848484',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.036, 
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+  },
+  toolBar: {
+    display: 'flex',
+    width: width,
+    height: height * 0.1, // 调整高度以容纳内容
+    paddingVertical: height * 0.02,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: height * 0.015,
+    flexShrink: 0,
+    borderRadius: 0,
+    backgroundColor: '#FFF',
+    position: 'absolute',
+    bottom: 0,
+    shadowColor: '#000', // 阴影颜色
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    }, // 阴影偏移量
+    shadowOpacity: 0.20, // 阴影透明度
+    shadowRadius: 8, // 阴影半径
+    elevation: 5, // Android 上的阴影
+  },
+  toolButtonRow: {
+    display: 'flex',
+    width: width * 0.96, 
+    paddingHorizontal: width * 0.04, 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: height * 0.01,
+  },
+  toolButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  overlayContainer: {
+    position: 'absolute',
+    bottom: height * 0.1, // 与工具栏保持一定距离
+    width: '100%',
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 36,
+    borderTopRightRadius: 36,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.5, // 加大阴影透明度
+    shadowRadius: 10,
+    elevation: 5,
+  },
+});
+
+export default ReadingScreen;
+
+我现在需要添加新的功能：TextSelection，即选择具体的、任意长度文本的时候，出现如图所示的气泡。气泡里面横向排布三个部分，Audio、Image、Look up。
+然后不要破坏我原来的逻辑：
+即点击屏幕，出现toolbar；点击 overlayContainer 时 toolbar 不消失，同时点击 toolbar 和 overlayContainer 外的区域时，
+toolbar 和 overlayContainer 一起消失。
+
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import ContentScreen from './Contents';
+import MultimodalScreen from './Multimodal';
+import ProgressScreen from './Progress';
+import TextSettingScreen from './TextSetting';
+import ContentIcon from '../assets/toolbar/content.svg';
+import MultimodalIcon from '../assets/toolbar/multimodality.svg';
+import ProgressIcon from '../assets/toolbar/progress.svg';
+import TextSettingIcon from '../assets/toolbar/text_setting.svg';
+
+const { width, height } = Dimensions.get('window');
+
+const ReadingScreen = () => {
+  const [showToolBar, setShowToolBar] = useState(false);
+  const [selectedButton, setSelectedButton] = useState<string | null>(null);
+  const [selection, setSelection] = useState(null);
+
+  const handlePress = () => {
+    setShowToolBar(!showToolBar);
+    setSelectedButton(null);
+  };
+
+  const handleButtonPress = (button: string) => {
+    setSelectedButton(button);
+  };
+
+  const getIconColor = (button: string) => (selectedButton === button ? '#A8ADB7' : '#667080');
+
+  const handleSelection = ({ nativeEvent: { selection } }) => {
+    setSelection(selection);
+  };
+
+  const renderBubble = () => {
+    if (!selection) return null;
+
+    const { start, end } = selection;
+    const text = textContent.substring(start, end);
+
+    return (
+      <View style={styles.bubble}>
+        <TouchableOpacity style={styles.bubbleButton}>
+          <Text style={styles.bubbleText}>Audio</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bubbleButton}>
+          <Text style={styles.bubbleText}>Image</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bubbleButton}>
+          <Text style={styles.bubbleText}>Look up</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={handlePress}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.chapterTitle}>Chapter Name</Text>
+        </View>
+        <TouchableOpacity style={styles.contentContainer} onPress={handlePress}>
+          <Text style={styles.textContent} onSelectionChange={handleSelection}>
+            “Emminent in his field yet relatively little known to the wider public, Bruner was one of those people whose ideas shape culture in ways most of us are barely aware of. He had already backed one revolution in his field, in the 1950s, when as a professor at Harvard he helped lead a rebellion against radical behaviorism, then the dominant school in American psychology.
+            {"\n\n"}
+            Behaviorism, championed by his Harvard colleague B. F. Skinner, sought to limit psychology to that which can be scientifically and empirically observed—which is to say, behavior. It rejected anything so vague and fuzzy as the mind, along with such related concepts as intentions, beliefs, and desires. In Skinner’s view, the mind is a black box; humans, like any other organism, can be properly understood only through objectively observable behaviors which various stimuli produce. To consider anything else would be “unscientific.”
+          </Text>
+          {renderBubble()}
+        </TouchableOpacity>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Time</Text>
+          <Text style={styles.footerText}>XX/YY</Text>
+        </View>
+        {selectedButton && (
+          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <ScrollView style={styles.overlayContainer}>
+              {selectedButton === 'contents' && <ContentScreen />}
+              {selectedButton === 'multimodal' && <MultimodalScreen />}
+              {selectedButton === 'progress' && <ProgressScreen />}
+              {selectedButton === 'textSetting' && <TextSettingScreen />}
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        )}
+        {showToolBar && (
+          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <View style={styles.toolBar}>
+              <View style={styles.toolButtonRow}>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('contents')}>
+                  <ContentIcon width={30} height={30} fill={getIconColor('contents')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('progress')}>
+                  <ProgressIcon width={30} height={30} fill={getIconColor('progress')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('multimodal')}>
+                  <MultimodalIcon width={26} height={26} fill={getIconColor('multimodal')} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('textSetting')}>
+                  <TextSettingIcon width={26} height={26} fill={getIconColor('textSetting')} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F8F8F8',
+  },
+  header: {
+    width: '100%',
+    height: height * 0.05, // 固定顶部高度
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chapterTitle: {
+    color: '#848484',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.036, 
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.001,
+  },
+  textContent: {
+    width: '100%',
+    height: height * 0.75,
+    color: '#000',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.05, // 20px
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+    textAlign: 'justify',
+    marginVertical: height * 0.001, // 你可以在此处添加垂直边距
+  },
+  footer: {
+    width: '100%',
+    height: height * 0.08, // 固定底部高度
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: width * 0.05,
+    backgroundColor: '#F8F8F8',
+    position: 'absolute',
+    bottom: 0,
+  },
+  footerText: {
+    color: '#848484',
+    fontFamily: 'Times New Roman',
+    fontSize: width * 0.036, 
+    fontWeight: '400',
+    lineHeight: width * 0.084, // 36px
+  },
+  toolBar: {
+    display: 'flex',
+    width: width,
+    height: height * 0.1, // 调整高度以容纳内容
+    paddingVertical: height * 0.02,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: height * 0.015,
+    flexShrink: 0,
+    borderRadius: 0,
+    backgroundColor: '#FFF',
+    position: 'absolute',
+    bottom: 0,
+    shadowColor: '#000', // 阴影颜色
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    }, // 阴影偏移量
+    shadowOpacity: 0.20, // 阴影透明度
+    shadowRadius: 8, // 阴影半径
+    elevation: 5, // Android 上的阴影
+  },
+  toolButtonRow: {
+    display: 'flex',
+    width: width * 0.96, 
+    paddingHorizontal: width * 0.04, 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: height * 0.01,
+  },
+  toolButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  overlayContainer: {
+    position: 'absolute',
+    bottom: height * 0.1, // 与工具栏保持一定距离
+    width: '100%',
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 36,
+    borderTopRightRadius: 36,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.5, // 加大阴影透明度
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  bubble: {
+    position: 'absolute',
+    top: height * 0.75, // 调整气泡位置
+    left: width * 0.05, // 调整气泡位置
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bubbleButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  bubbleText: {
+    color: '#000',
+    fontSize: 14,
+  },
+});
+
+export default ReadingScreen;
+
