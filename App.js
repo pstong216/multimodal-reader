@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
+import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text, View } from 'react-native';
-import SettingsScreen from './components/SettingsScreen';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './components/HomeScreen';
+import ReadingScreen from './components/ReadingScreen';
+import SettingScreen from './components/SettingScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+const App = () => {
   return (
-   <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Settings" component={SettingsScreen} />
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Reading" component={ReadingScreen} />
+        <Stack.Screen name="Setting" component={SettingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
-
-
+export default App;
