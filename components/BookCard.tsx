@@ -1,27 +1,45 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import SvgUri from 'react-native-svg';
-import { useNavigation } from '@react-navigation/native';
-type BookCardProps = {
-  bookName: string;
-  progress: string;
-  iconUri: string;
+import React, { FC } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
+// import { useNavigation } from "@react-navigation/native";
+import { BookCardProps } from "../types";
+const bookImage = require("../assets/home/bookIcon.png");
+const addImage = require("../assets/home/addIcon.png");
+const { width, height } = Dimensions.get("window");
 
-};
-const { width, height } = Dimensions.get('window');
-
-const BookCard: React.FC<BookCardProps> = ({ bookName, progress, iconUri }) => {
-  const navigation = useNavigation();
-
+const BookCard: FC<BookCardProps> = ({
+  bookName = "Book",
+  progress = 26,
+  cardType = "book",
+  onPress,
+}) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Reading')}>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.bookCard}>
         <View style={styles.bookImageContainer}>
-          <SvgUri width="100%" height="100%" uri={iconUri} />
+          <ImageBackground
+            source={cardType === "book" ? bookImage : addImage}
+            style={styles.ImageBackground}
+          />
         </View>
         <View style={styles.bookTextContainer}>
-          <Text style={styles.bookTitle}>{bookName}</Text>
-          {progress !== "" && <Text style={styles.bookProgress}>{progress}</Text>}
+          <Text
+            style={[
+              styles.bookTitle,
+              cardType == "add" && { alignSelf: "center" },
+            ]}
+          >
+            {bookName}
+          </Text>
+          <Text style={styles.bookProgress}>
+            {progress == 0 ? "" : progress + "%"}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -30,16 +48,16 @@ const BookCard: React.FC<BookCardProps> = ({ bookName, progress, iconUri }) => {
 
 const styles = StyleSheet.create({
   bookCard: {
-    alignItems: 'flex-start',
-    display: 'flex',
-    flexDirection: 'column',
+    alignItems: "flex-start",
+    display: "flex",
+    flexDirection: "column",
     gap: 10,
-    position: 'relative',
+    // position: "relative",
     width: width * 0.27, // 调整宽度以适应屏幕大小
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 15,
     borderRadius: 15,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 5,
@@ -49,43 +67,49 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   bookImageContainer: {
-    alignItems: 'flex-start',
-    display: 'flex',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 0,
     gap: 13,
-    position: 'relative',
+    // position: "relative",
+    width: "100%",
     height: height * 0.1, // 调整高度以适应比例
     marginBottom: height * 0.02, // 调整下边距
-    width: '100%',
+  },
+  ImageBackground: {
+    resizeMode: "contain",
+    width: 24,
+    height: 24,
   },
   bookTextContainer: {
-    alignItems: 'flex-start',
-    display: 'flex',
+    alignItems: "flex-start",
+    display: "flex",
     flex: 0,
-    flexDirection: 'column',
+    flexDirection: "column",
     gap: 5,
-    paddingLeft: 5,
-    position: 'relative',
-    width: '100%',
+    // paddingLeft: 5,
+    position: "relative",
+    width: "100%",
   },
   bookTitle: {
-    color: '#000000',
-    fontFamily: 'Mulish-SemiBold',
+    color: "#000000",
+    fontFamily: "Mulish-SemiBold",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: 18,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    width: 'fit-content',
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    width: "fit-content",
   },
   bookProgress: {
-    color: '#00000099',
-    fontFamily: 'Mulish-Light',
+    color: "#00000099",
+    fontFamily: "Mulish-Light",
     fontSize: 14,
-    fontWeight: '300',
+    fontWeight: "300",
     lineHeight: 18,
-    width: '100%',
+    width: "100%",
   },
 });
 
