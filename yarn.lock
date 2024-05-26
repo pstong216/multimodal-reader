@@ -3287,11 +3287,6 @@ crypto-random-string@^2.0.0:
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
 
-crypto@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmmirror.com/crypto/-/crypto-1.0.1.tgz#2af1b7cad8175d24c8a1b0778255794a21803037"
-  integrity sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==
-
 css-select@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npmjs.org/css-select/-/css-select-5.1.0.tgz"
@@ -3812,6 +3807,11 @@ expo-asset@~9.0.2:
     expo-file-system "~16.0.0"
     invariant "^2.2.4"
     md5-file "^3.2.3"
+
+expo-brightness@~11.8.0:
+  version "11.8.0"
+  resolved "https://registry.npmmirror.com/expo-brightness/-/expo-brightness-11.8.0.tgz#214cd01682ba3214ccb7c4c70cc3b9d9f6c1a1f5"
+  integrity sha512-ipQA7s8PvJVhy+Ls6Dsql0veXXV5CdMcbXNPwQuXTbUofRE+8FHO0vasShMZlKYcD9KNgFygjx0U+THi80dtAw==
 
 expo-constants@~15.4.0:
   version "15.4.6"
