@@ -1,5 +1,5 @@
 // HomeScreen.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SettingIcon from "../assets/home/setting.svg";
@@ -14,14 +15,15 @@ import SearchBar from "../assets/home/search.svg";
 import EditIcon from "../assets/home/edit.svg";
 import BookCard from "./BookCard"; // Assuming BookCard component is in the same directory
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types";
+import { Book, RootStackParamList } from "../types";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
+import { parseText } from "../utils/textParser";
 
 const { width, height } = Dimensions.get("window");
 
 const HomeScreen = () => {
-  const [fileContent, setFileContent] = useState<string>("");
+  const [books, setBooks] = useState<Book[]>([]);
   const navigation =
     useNavigation<StackNavigationProp<RootStackParamList, "Home">>();
 
@@ -29,27 +31,49 @@ const HomeScreen = () => {
     navigation.navigate("Setting");
   };
 
+  useEffect(() => {
+    readBooks();
+  }, []);
+  // 读取 json 书籍文件
+  const readBooks = async () => {
+    try {
+      const path = FileSystem.documentDirectory;
+      const files = await FileSystem.readDirectoryAsync(path!);
+      const newBooks: Book[] = [];
+      for (const bookFile of files.filter((file) => file.endsWith(".json"))) {
+        const uri = FileSystem.documentDirectory + bookFile;
+        const fileContent = await FileSystem.readAsStringAsync(uri);
+        const bookObj: Book = JSON.parse(fileContent);
+        newBooks.push(bookObj);
+      }
+      setBooks([...newBooks]);
+    } catch (err) {
+      Alert.alert("Error", String(err));
+    }
+  };
   // 导入并解析文本文件
   const pickDocument = async () => {
     try {
       const res = await DocumentPicker.getDocumentAsync({
-        type: "text/*", // 可以指定文件类型，例如 'image/*', 'application/pdf', 等
+        type: "text/*", // 指定文件类型
       });
       if (!res.canceled) {
         const fileContent = await FileSystem.readAsStringAsync(
           res.assets[0].uri
         );
-        setFileContent(fileContent);
+        await parseText(fileContent);
       }
+      //刷新书籍
+      await readBooks();
     } catch (err) {
-      console.error("Error picking document:", err);
+      Alert.alert("Error", String(err));
     }
   };
 
   return (
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text>{fileContent}</Text>
+        {/* <Text>{fileContent}</Text> */}
         <View style={styles.headerContainer}>
           <TouchableOpacity
             style={styles.settingIcon}
@@ -66,18 +90,19 @@ const HomeScreen = () => {
           <EditIcon width={20.951} height={20.183} />
         </View>
         <View style={styles.booksContainer}>
-          <BookCard
-            bookName="Book 1"
-            progress={26}
-            cardType="book"
-            onPress={() => navigation.navigate("Reading", { bookId: "1" })}
-          />
-          <BookCard
-            bookName="Book 2"
-            progress={44}
-            cardType="book"
-            onPress={() => navigation.navigate("Reading", { bookId: "2" })}
-          />
+          {books.map((book) => {
+            return (
+              <BookCard
+                key={book.id}
+                bookName={book.name}
+                progress={book.lastRead.chapter / book.chapters.length}
+                cardType="book"
+                onPress={() =>
+                  navigation.navigate("Reading", { bookId: book.id })
+                }
+              />
+            );
+          })}
           <BookCard
             bookName="Add"
             progress={0}
@@ -140,7 +165,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%", // 100% of the screen width minus padding
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
+    columnGap: 13,
+    rowGap: 20,
     alignItems: "flex-start",
   },
 });
