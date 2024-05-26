@@ -38,7 +38,9 @@
     "react-native-svg": "^15.3.0",
     "react-native-svg-transformer": "^1.4.0",
     "react-native-webview": "^13.10.2",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "expo-brightness": "~11.8.0",
+    "expo-font": "~11.10.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

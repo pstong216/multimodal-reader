@@ -2,10 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import SvgUri from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
+type BookCardProps = {
+  bookName: string;
+  progress: string;
+  iconUri: string;
 
+};
 const { width, height } = Dimensions.get('window');
 
-const BookCard = ({ bookName = "Book", progress = "26%", iconUri }) => {
+const BookCard: React.FC<BookCardProps> = ({ bookName, progress, iconUri }) => {
   const navigation = useNavigation();
 
   return (
