@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { Picker } from '@react-native-picker/picker';
@@ -14,55 +14,91 @@ import Layout1Icon from '../assets/text_setting/layout1.svg';
 import Layout2Icon from '../assets/text_setting/layout2.svg';
 import Layout3Icon from '../assets/text_setting/layout3.svg';
 import RectangularButton from '../assets/text_setting/rectangular_button.svg';
-
+import useStore from '../stores/useSettingsStore';
+import * as Brightness from 'expo-brightness';
+import * as Font from 'expo-font';
 const { width, height } = Dimensions.get('window');
 
 const TextSettingScreen = () => {
   const [selectedFont, setSelectedFont] = useState("Times New Roman");
   const [isFontPickerVisible, setFontPickerVisible] = useState(false);
+  const { brightness, setBrightness, background, setBackground, fontSize, setFontSize, fontFamily, setFontFamily, margin, setMargin, setLeading } = useStore();
+  const colorList = ['#F8F8F8', '#CCF0CF', '#F7F0DF', '#494949'];
+  const fontFamilyList = ['Times New Roman', 'Arial', 'Courier New', 'Georgia', 'Verdana'];
+  useEffect(() => {
+
+    const fetchBrightness = async () => {
+      // await Brightness.setBrightnessAsync(0.1);
+      const currentBrightness = await Brightness.getBrightnessAsync();
+      console.log('current ', currentBrightness);
+      setBrightness(currentBrightness);
+    };
+    fetchBrightness();
+  }, []);
+
+  const handleValueChange = async (newBrightness: number) => {
+    console.log('attempting ', newBrightness);
+    await Brightness.setBrightnessAsync(newBrightness);//这个API没效果。。
+    const fetchBrightness = async () => {
+      const currentBrightness = await Brightness.getBrightnessAsync();
+      // console.log('current ', currentBrightness);
+      setBrightness(currentBrightness);
+    };
+    fetchBrightness();
+    setBrightness(newBrightness);
+  };
 
   return (
     <ScrollView style={styles.container}>
+      {/* 亮度 */}
       <View style={styles.sliderContainer}>
         <BrightnessIcon width={24} height={24} />
         <Slider
           style={styles.slider}
-          value={50}
+          value={brightness}
+          onValueChange={handleValueChange}
           minimumValue={0}
-          maximumValue={100}
+          maximumValue={0.99}
           thumbTintColor="#FFF"
           minimumTrackTintColor="#DADADA"
           maximumTrackTintColor="rgba(218, 218, 218, 0.39)"
         />
       </View>
+      {/* 选择背景颜色 */}
       <View style={styles.colorOptions}>
-        <TouchableOpacity style={styles.colorButtonWhite}>
-          <ColorCircle fill="#F8F8F8" />
+        <TouchableOpacity
+          style={styles.colorButtonWhite}
+          onPress={() => setBackground(colorList[0])}
+        >
+          <ColorCircle fill={colorList[0]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.colorButtonGreen}>
-          <ColorCircle fill="#CCF0CF" />
+        <TouchableOpacity style={styles.colorButtonGreen} onPress={() => setBackground(colorList[1])}>
+          <ColorCircle fill={colorList[1]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.colorButtonYellow}>
-          <ColorCircle fill="#F7F0DF" />
+        <TouchableOpacity style={styles.colorButtonYellow} onPress={() => setBackground(colorList[2])}>
+          <ColorCircle fill={colorList[2]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.colorButtonBlack}>
-          <ColorCircle fill="#494949" />
+        <TouchableOpacity style={styles.colorButtonBlack} onPress={() => setBackground(colorList[3])}>
+          <ColorCircle fill={colorList[3]} />
         </TouchableOpacity>
+        {/* 翻页模式 */}
         <TouchableOpacity style={styles.rectangularButton}>
           <RectangularButton width={79} height={51} />
         </TouchableOpacity>
       </View>
+      {/* 字体大小 */}
       <View style={styles.textSizeContainer}>
-        <TouchableOpacity style={styles.textSizeButtonDecrease}>
+        <TouchableOpacity style={styles.textSizeButtonDecrease} onPress={() => setFontSize(Math.max(fontSize - 1, -10))}>
           <TextSizeDecreaseIcon width={116} height={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.textSizeButtonIncrease}>
+        <TouchableOpacity style={styles.textSizeButtonIncrease} onPress={() => setFontSize(Math.min(fontSize + 1, 15))}>
           <TextSizeIncreaseIcon width={116} height={48} />
         </TouchableOpacity>
       </View>
+      {/* 字体 */}
       <View style={styles.fontFamilyContainer}>
         <View style={styles.fontFamilyPickerContainer}>
-          <Text style={styles.selectedFontText}>{selectedFont}</Text>
+          <Text style={styles.selectedFontText}>{fontFamily}</Text>
           <TouchableOpacity onPress={() => setFontPickerVisible(true)}>
             <FontDropdownIcon style={styles.fontDropdownIcon} />
           </TouchableOpacity>
@@ -75,9 +111,9 @@ const TextSettingScreen = () => {
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <Picker
-                selectedValue={selectedFont}
+                selectedValue={fontFamily}
                 style={styles.fontFamilyPicker}
-                onValueChange={(itemValue) => setSelectedFont(itemValue)}
+                onValueChange={(itemValue: string) => setFontFamily(itemValue)}
               >
                 <Picker.Item label="Times New Roman" value="Times New Roman" />
                 <Picker.Item label="Arial" value="Arial" />
@@ -93,25 +129,26 @@ const TextSettingScreen = () => {
         </Modal>
       </View>
       <View style={styles.line} />
+      {/* 行距 */}
       <View style={styles.textAlignContainer}>
-        <TouchableOpacity style={styles.textAlignButton}>
+        <TouchableOpacity style={styles.textAlignButton} onPress={() => setLeading(-2)}>
           <AlignLeftIcon width={108} height={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.textAlignButton}>
+        <TouchableOpacity style={styles.textAlignButton} onPress={() => setLeading(-1)}>
           <AlignCenterIcon width={108} height={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.textAlignButton}>
+        <TouchableOpacity style={styles.textAlignButton} onPress={() => setLeading(0)}>
           <AlignRightIcon width={108} height={48} />
         </TouchableOpacity>
       </View>
       <View style={styles.layoutOptions}>
-        <TouchableOpacity style={styles.layoutButton}>
+        <TouchableOpacity style={styles.layoutButton} onPress={() => setMargin(-1)}>
           <Layout1Icon width={108} height={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.layoutButton}>
+        <TouchableOpacity style={styles.layoutButton} onPress={() => setMargin(1)}>
           <Layout2Icon width={108} height={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.layoutButton}>
+        <TouchableOpacity style={styles.layoutButton} onPress={() => setMargin(3)}>
           <Layout3Icon width={108} height={48} />
         </TouchableOpacity>
       </View>
