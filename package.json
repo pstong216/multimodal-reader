@@ -18,8 +18,10 @@
     "@rneui/base": "^4.0.0-rc.7",
     "@rneui/themed": "^4.0.0-rc.8",
     "expo": "~50.0.14",
+    "expo-brightness": "~11.8.0",
     "expo-document-picker": "~11.10.1",
     "expo-file-system": "~16.0.9",
+    "expo-font": "~11.10.3",
     "expo-image-picker": "~14.7.1",
     "expo-random": "~13.6.0",
     "expo-status-bar": "~1.11.1",
@@ -41,11 +43,10 @@
     "react-native-selectable-text": "^1.0.2",
     "react-native-svg": "^15.3.0",
     "react-native-svg-transformer": "^1.4.0",
+    "react-native-vector-icons": "^10.1.0",
     "react-native-webview": "^13.10.2",
     "uuid": "^9.0.1",
-    "zustand": "^4.5.2",
-    "expo-brightness": "~11.8.0",
-    "expo-font": "~11.10.3"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

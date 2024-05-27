@@ -73,7 +73,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.screen}>
       <ScrollView contentContainerStyle={styles.container}>
-        {/* <Text>{fileContent}</Text> */}
+        {/* 设置 */}
         <View style={styles.headerContainer}>
           <TouchableOpacity
             style={styles.settingIcon}
@@ -82,6 +82,7 @@ const HomeScreen = () => {
             <SettingIcon width={20} height={13.998} />
           </TouchableOpacity>
         </View>
+
         <View style={styles.searchBarPlaceholder}>
           <SearchBar width="100%" height="100%" />
         </View>
