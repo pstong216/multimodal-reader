@@ -10,6 +10,7 @@ import ProgressIcon from '../assets/toolbar/progress.svg';
 import TextSettingIcon from '../assets/toolbar/text_setting.svg';
 import useStore from '../stores/useSettingsStore';
 import timeStore from '../stores/timeStore';
+import stateStore from '../stores/stateStore';
 const { width, height } = Dimensions.get('window');
 
 const ReadingScreen = () => {
@@ -17,6 +18,7 @@ const ReadingScreen = () => {
   const time = timeStore();
   const { showToolBar, setShowToolBar, selectedButton, setSelectedButton, background, fontSize, fontFamily, leading, margin } = store;
   const { currentTime, updateCurrentTime } = time;
+  const { modalVisible, setModalVisible } = stateStore();
   // const [showToolBar, setShowToolBar] = useState(false);
   // const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
@@ -185,7 +187,7 @@ const ReadingScreen = () => {
                 <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('progress')}>
                   <ProgressIcon width={30} height={30} fill={getIconColor('progress')} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('multimodal')}>
+                <TouchableOpacity style={styles.toolButton} onPress={() => { setModalVisible(true); handleButtonPress('multimodal') }}>
                   <MultimodalIcon width={26} height={26} fill={getIconColor('multimodal')} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.toolButton} onPress={() => handleButtonPress('textSetting')}>

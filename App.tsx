@@ -6,7 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./components/HomeScreen";
 import ReadingScreen from "./components/ReadingScreen";
 import SettingScreen from "./components/SettingScreen";
-
+import Multimodal from "./components/Multimodal";
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Reading" component={ReadingScreen} />
         <Stack.Screen name="Setting" component={SettingScreen} />
+        <Stack.Screen name="Multimodal" component={Multimodal} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -12,6 +12,22 @@ export interface SettingsState {
   background: string;
   brightness: number;
   language: string;
+  fontSizeGlobal: number;
+  fontFamilyGlobal: string;
+  fontColorGlobal: string;
+  leadingGlobal: number;
+  marginGlobal: number;
+  paraSpacingGlobal: number;
+  backgroundGlobal: string;
+  backImgGlobal: string;
+  setFontSizeGlobal: (fontSizeGlobal: number) => void;
+  setFontFamilyGlobal: (fontFamilyGlobal: string) => void;
+  setFontColorGlobal: (fontColorGlobal: string) => void;
+  setLeadingGlobal: (leadingGlobal: number) => void;
+  setMarginGlobal: (marginGlobal: number) => void;
+  setParaSpacingGlobal: (paraSpacingGlobal: number) => void;
+  setBackgroundGlobal: (backgroundGlobal: string) => void;
+  setBackImgGlobal: (backImgGlobal: string) => void;
   setLanguage: (language: string) => void;
   setFontColor: (fontColor: string) => void;
   setLeading: (leading: number) => void;
@@ -109,4 +125,11 @@ export interface Explaination {
 export interface TimeState {
   currentTime: string;
   updateCurrentTime: () => void;
+}
+
+export interface modalSettingState {
+  globalTextSetting: boolean;
+  modalVisible: boolean;
+  setGlobalTextSetting: (globalTextSetting: boolean) => void;
+  setModalVisible: (modalVisible: boolean) => void;
 }
