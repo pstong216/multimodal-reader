@@ -19,11 +19,12 @@ import { Book, RootStackParamList } from "../types";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { parseText } from "../utils/textParser";
-
+import useSettingStore from "../stores/useSettingsStore";
 const { width, height } = Dimensions.get("window");
 
 const HomeScreen = () => {
   const [books, setBooks] = useState<Book[]>([]);
+  const { setBook, book } = useSettingStore();
   const navigation =
     useNavigation<StackNavigationProp<RootStackParamList, "Home">>();
 
@@ -47,6 +48,7 @@ const HomeScreen = () => {
         newBooks.push(bookObj);
       }
       setBooks([...newBooks]);
+
     } catch (err) {
       Alert.alert("Error", String(err));
     }
@@ -98,8 +100,11 @@ const HomeScreen = () => {
                 bookName={book.name}
                 progress={book.lastRead.chapter / book.chapters.length}
                 cardType="book"
-                onPress={() =>
-                  navigation.navigate("Reading", { bookId: book.id })
+                onPress={() => {
+                  navigation.navigate("Reading", { bookId: book.id });
+                  const bookIndex = books.findIndex((b) => b.id === book.id);
+                  setBook(books[bookIndex]);//在store中设置当前书籍
+                }
                 }
               />
             );

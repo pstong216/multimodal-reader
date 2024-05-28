@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Pressable } from 'react-native';
 import ContentScreen from './Contents';
 import MultimodalScreen from './Multimodal';
 import ProgressScreen from './Progress';
@@ -16,9 +16,10 @@ const { width, height } = Dimensions.get('window');
 const ReadingScreen = () => {
   const store = useStore();
   const time = timeStore();
-  const { showToolBar, setShowToolBar, selectedButton, setSelectedButton, background, fontSize, fontFamily, leading, margin } = store;
+  const { fontColor, setFontColor, book, showToolBar, setShowToolBar, selectedButton, setSelectedButton, background, fontSize, fontFamily, leading, margin } = store;
   const { currentTime, updateCurrentTime } = time;
   const { modalVisible, setModalVisible } = stateStore();
+  const [currentColor, setCurrentColor] = useState('#000');
   // const [showToolBar, setShowToolBar] = useState(false);
   // const [selectedButton, setSelectedButton] = useState<string | null>(null);
 
@@ -44,6 +45,7 @@ const ReadingScreen = () => {
     container: {
       flex: 1,
       backgroundColor: background,
+      // backgroundImage: 'url(../assets/backgrounds/reading.jpg)',
     },
     header: {
       width: '100%',
@@ -66,7 +68,7 @@ const ReadingScreen = () => {
     textContent: {
       width: '100%',
       height: height * 0.75,
-      color: '#000',
+      color: fontColor,
       fontFamily: fontFamily,
       fontSize: width * (0.05 + 0.005 * fontSize), // 20px
       fontWeight: '400',
@@ -154,19 +156,50 @@ const ReadingScreen = () => {
   const text = "EDG Viper his field yet relatively little known to the wider public his field yet relatively little known his field yet relatively little known to the wider public  to the wider public his field yet relatively little known to the wider publichis field yet relatively little known to the wider public his field yet relatively little known to the wider public his field yet relatively little known to the wider publichis field yet relatively little known to the wider publichis field yet relatively little known to the wider publichis field yet relatively little known to the wider publichis field yet relatively little known to the wider publichis field yet relatively little known to the wider public"
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
+
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.chapterTitle}>Chapter Name</Text>
-        </View>
-        <Pressable style={styles.contentContainer} onPress={handlePress}>
-          <Text style={styles.textContent}>
-            {text}
-          </Text>
-        </Pressable>
+        {book.theme && book.theme.bgImg !== '' ?
+          <ImageBackground
+            source={{ uri: book.theme.bgImg }}
+          >
+            <View style={styles.header}>
+              <Text style={styles.chapterTitle}>Chapter Name</Text>
+            </View>
+            <Pressable style={styles.contentContainer} onPress={handlePress}>
+              <Text style={styles.textContent}>
+                {text}
+              </Text>
+            </Pressable>
+          </ImageBackground> : <ImageBackground
+          // source={{ uri: book.theme.bgImg }}
+          >
+            <View style={styles.header}>
+              <Text style={styles.chapterTitle}>Chapter Name</Text>
+            </View>
+            <Pressable style={styles.contentContainer} onPress={handlePress}>
+              <Text style={styles.textContent}>
+                {text}
+              </Text>
+            </Pressable>
+          </ImageBackground>
+        }
+        {/* <ImageBackground
+        // source={{ uri: book.theme.bgImg }}
+        >
+          <View style={styles.header}>
+            <Text style={styles.chapterTitle}>Chapter Name</Text>
+          </View>
+          <Pressable style={styles.contentContainer} onPress={handlePress}>
+            <Text style={styles.textContent}>
+              {text}
+            </Text>
+          </Pressable>
+        </ImageBackground> */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>{currentTime}</Text>
           <Text style={styles.footerText}>XX/YY</Text>
         </View>
+
         {selectedButton && (
           <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
             <ScrollView style={styles.overlayContainer}>
@@ -198,6 +231,7 @@ const ReadingScreen = () => {
           </TouchableWithoutFeedback>
         )}
       </View>
+
     </TouchableWithoutFeedback>
   );
 };

@@ -22,7 +22,7 @@ const { width, height } = Dimensions.get('window');
 const TextSettingScreen = () => {
   const [selectedFont, setSelectedFont] = useState("Times New Roman");
   const [isFontPickerVisible, setFontPickerVisible] = useState(false);
-  const { brightness, setBrightness, background, setBackground, fontSize, setFontSize, fontFamily, setFontFamily, margin, setMargin, setLeading } = useStore();
+  const { brightness, setFontColor, setBrightness, background, setBackground, fontSize, setFontSize, fontFamily, setFontFamily, margin, setMargin, setLeading } = useStore();
   const colorList = ['#F8F8F8', '#CCF0CF', '#F7F0DF', '#494949'];
   const fontFamilyList = ['Times New Roman', 'Arial', 'Courier New', 'Georgia', 'Verdana'];
   useEffect(() => {
@@ -68,17 +68,17 @@ const TextSettingScreen = () => {
       <View style={styles.colorOptions}>
         <TouchableOpacity
           style={styles.colorButtonWhite}
-          onPress={() => setBackground(colorList[0])}
+          onPress={() => { setBackground(colorList[0]); setFontColor('#000') }}
         >
           <ColorCircle fill={colorList[0]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.colorButtonGreen} onPress={() => setBackground(colorList[1])}>
+        <TouchableOpacity style={styles.colorButtonGreen} onPress={() => { setBackground(colorList[1]); setFontColor('#000') }}>
           <ColorCircle fill={colorList[1]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.colorButtonYellow} onPress={() => setBackground(colorList[2])}>
+        <TouchableOpacity style={styles.colorButtonYellow} onPress={() => { setBackground(colorList[2]); setFontColor('#000') }}>
           <ColorCircle fill={colorList[2]} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.colorButtonBlack} onPress={() => setBackground(colorList[3])}>
+        <TouchableOpacity style={styles.colorButtonBlack} onPress={() => { setBackground(colorList[3]); setFontColor(colorList[0]) }}>
           <ColorCircle fill={colorList[3]} />
         </TouchableOpacity>
         {/* 翻页模式 */}

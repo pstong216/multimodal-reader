@@ -6,6 +6,7 @@ import ColorPicker from './Multimodal/ColorPicker';
 import Dropdown from './Multimodal/Dropdown';
 import TagInput from './Multimodal/TagInput';
 import stateStore from '../stores/stateStore';
+import useSettingstore from '../stores/useSettingsStore';
 
 const screenHeight = Dimensions.get('window').height; // 获取屏幕高度
 
@@ -18,7 +19,7 @@ const Multimodal: React.FC = () => {
   const [themeEnabled, setThemeEnabled] = useState(false);
   const [fontFamily, setFontFamily] = useState('Times New Roman');
   const [tags, setTags] = useState<string[]>([]);
-
+  const { book, styleOptions, setBook } = useSettingstore();
   return (
     <Modal
       animationType="slide"
@@ -38,10 +39,20 @@ const Multimodal: React.FC = () => {
           <ToggleSwitch label="Multimodal Content Generation" value={gcEnabled} onValueChange={setGcEnabled} />
           <View style={styles.section}>
             <ToggleSwitch label="Audio" value={audioEnabled} onValueChange={setAudioEnabled} />
+            <View>
+              <Text style={styles.tagsContainer}>
+                tags1, tags2
+              </Text>
+            </View>
             <TagInput tags={tags} onTagsChange={setTags} />
           </View>
           <View style={styles.section}>
             <ToggleSwitch label="Image" value={imageEnabled} onValueChange={setImageEnabled} />
+            <View>
+              <Text style={styles.tagsContainer}>
+                tags1, tags2
+              </Text>
+            </View>
             <TagInput tags={tags} onTagsChange={setTags} />
           </View>
           <View style={styles.section}>
@@ -55,7 +66,16 @@ const Multimodal: React.FC = () => {
             </View>
             <View style={styles.themeOptions}>
               <Text>Font Family</Text>
-              <Dropdown options={['Times New Roman', 'Arial', 'Courier']} selectedValue={fontFamily} onValueChange={setFontFamily} />
+              <Dropdown options={['Times New Roman', 'Arial', 'Courier']} selectedValue={book.theme ? book.theme.fontFamily : fontFamily} onValueChange={() => {
+                setFontFamily(fontFamily);
+                setBook({
+                  ...book,
+                  theme: {
+                    ...book.theme as { bgImg: string, fontFamily: string, fontColor: string },
+                    fontFamily,
+                  },
+                });
+              }} />
             </View>
             <View style={styles.themeOptions}>
               <Text>Font Color</Text>
@@ -69,6 +89,12 @@ const Multimodal: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  tagsContainer: {
+    padding: 10,
+    width: '100%',
+    height: 80,
+    backgroundColor: '#f0f0f0',
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end', // 将内容对齐到屏幕底部
