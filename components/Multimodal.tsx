@@ -7,6 +7,8 @@ import Dropdown from './Multimodal/Dropdown';
 import TagInput from './Multimodal/TagInput';
 import stateStore from '../stores/stateStore';
 import useSettingstore from '../stores/useSettingsStore';
+import TegShown from './Multimodal/TegShown';
+import Tag from './Multimodal/Tag';
 
 const screenHeight = Dimensions.get('window').height; // 获取屏幕高度
 
@@ -19,7 +21,9 @@ const Multimodal: React.FC = () => {
   const [themeEnabled, setThemeEnabled] = useState(false);
   const [fontFamily, setFontFamily] = useState('Times New Roman');
   const [tags, setTags] = useState<string[]>([]);
-  const { book, styleOptions, setBook } = useSettingstore();
+  const { book, styleOptions, setBook, tempMusicTags, tempImgTags, setTempImgTags, setTempMusicTags } = useSettingstore();
+  // const [tempTags, setTempTags] = useState<string[]>([]);
+  // const {  } = useSettingstore();
   return (
     <Modal
       animationType="slide"
@@ -39,21 +43,48 @@ const Multimodal: React.FC = () => {
           <ToggleSwitch label="Multimodal Content Generation" value={gcEnabled} onValueChange={setGcEnabled} />
           <View style={styles.section}>
             <ToggleSwitch label="Audio" value={audioEnabled} onValueChange={setAudioEnabled} />
-            <View>
-              <Text style={styles.tagsContainer}>
-                tags1, tags2
-              </Text>
+            <View style={styles.tagsContainer}>
+              {
+                tempMusicTags.map((tag, index) => {
+                  return (
+                    <TegShown key={index} tag={tag} type='music'></TegShown>
+                  )
+                })
+              }
             </View>
-            <TagInput tags={tags} onTagsChange={setTags} />
+            <View style={styles.tagListContainer}>
+              {
+                styleOptions.musicOptions.map((option, index) => {
+                  return (
+                    <Tag key={index} text={option} type='music'></Tag>
+                  )
+                })
+              }
+            </View>
+
+            <TagInput tags={tags} onTagsChange={(addedTag) => { setTempMusicTags([...tempMusicTags, addedTag]) }} />
           </View>
           <View style={styles.section}>
             <ToggleSwitch label="Image" value={imageEnabled} onValueChange={setImageEnabled} />
-            <View>
-              <Text style={styles.tagsContainer}>
-                tags1, tags2
-              </Text>
+            <View style={styles.tagsContainer}>
+              {
+                tempImgTags.map((tag, index) => {
+                  return (
+                    <TegShown key={index} tag={tag} type='img'></TegShown>
+                  )
+                })
+              }
             </View>
-            <TagInput tags={tags} onTagsChange={setTags} />
+            <View style={styles.tagListContainer}>
+              {
+                styleOptions.imgOptions.map((option, index) => {
+                  return (
+                    <Tag key={index} text={option} type='img'></Tag>
+                  )
+                })
+              }
+            </View>
+            <TagInput tags={tags} onTagsChange={(addedTag) => { setTempImgTags([...tempImgTags, addedTag]) }} />
           </View>
           <View style={styles.section}>
             <ToggleSwitch label="Vibration" value={vibrationEnabled} onValueChange={setVibrationEnabled} />
@@ -83,13 +114,20 @@ const Multimodal: React.FC = () => {
             </View>
           </View>
         </ScrollView>
-      </View>
-    </Modal>
+      </View >
+    </Modal >
   );
 };
 
 const styles = StyleSheet.create({
+  tagListContainer: {
+    flexDirection: 'row', // 横向布局
+    flexWrap: 'wrap', // 允许内容换行
+    padding: 8 // 添加一些内边距
+  },
   tagsContainer: {
+    flexDirection: 'row', // 横向排列
+    flexWrap: 'wrap', // 允许内容换行
     padding: 10,
     width: '100%',
     height: 80,
