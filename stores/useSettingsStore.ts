@@ -1,6 +1,37 @@
 import { create } from 'zustand'
-import { SettingsState } from '../types'
+import { SettingsState, Book, Chapter } from '../types'
 const useStore = create<SettingsState>((set) => ({
+
+    book: {
+        id: '1',
+        name: '',
+        author: '',
+        cover: '',
+        chapters: [] as Chapter[],
+        multiModel: {
+            bookId: '1',
+            imgStyle: ['1'],
+            musicStyle: ['1'],
+            imgs: [],
+            musics: [],
+        },
+        lastRead: {
+            chapter: 0,
+            paragraph: 0,
+        },
+        theme: {
+            bgImg: '',
+            fontFamily: '',
+            fontColor: '',
+        }
+
+    },
+    setBook: (book: Book) => set(() => ({ book })),
+    styleOptions: {
+        imgOptions: [''],
+        musicOptions: ['']
+    },
+
     language: 'english',
     showToolBar: false,
     fontSize: 1,
@@ -14,6 +45,8 @@ const useStore = create<SettingsState>((set) => ({
     brightness: 0,
     selectedButton: null,
     turnOver: 'turnOver',
+
+
 
     fontSizeGlobal: 1,
     fontFamilyGlobal: 'Times New Roman',

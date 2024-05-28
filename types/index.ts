@@ -1,4 +1,8 @@
 export interface SettingsState {
+  book: Book;
+  setBook: (book: Book) => void;
+  styleOptions: styleOptions;
+
   selectedButton: string | null;
   fontColor: string;
   leading: number;
@@ -48,6 +52,15 @@ export type RootStackParamList = {
   Setting: undefined; // 'Setting' 屏幕不接受任何参数
   Reading: { bookId: string }; // 'Reading' 屏幕接受一个参数 userId
 };
+export type styleOptions = {
+  imgOptions: string[],
+  musicOptions: string[]
+}
+export type readingDisplay = {//阅读时小功能
+  // time: timestamp,
+  currentPage: string,
+  totalPage: string,
+}
 
 export interface BookCardProps {
   bookName: string;
