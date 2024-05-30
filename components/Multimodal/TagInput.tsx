@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+// import Sound from 'react-native-sound';
+import { Audio } from 'expo-av';
+
 import useSettingState from '../../stores/useSettingsStore';
+
 interface TagInputProps {
   tags: string[];
   onTagsChange: (tags: string) => void;
 }
 
+
 const TagInput: React.FC<TagInputProps> = ({ tags, onTagsChange }) => {
+
   const [tag, setTag] = useState('');
 
   const handleAddTag = () => {
@@ -17,8 +23,13 @@ const TagInput: React.FC<TagInputProps> = ({ tags, onTagsChange }) => {
   };
 
 
+
+
+
+
   return (
     <View style={styles.container}>
+
       <TextInput
         style={styles.input}
         value={tag}
@@ -26,9 +37,11 @@ const TagInput: React.FC<TagInputProps> = ({ tags, onTagsChange }) => {
         onSubmitEditing={handleAddTag}
         placeholder="Add a tag"
       />
+
       <TouchableOpacity style={styles.button} onPress={handleAddTag}>
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
+
     </View>
   );
 };
