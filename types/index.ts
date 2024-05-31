@@ -1,4 +1,9 @@
 export interface SettingsState {
+  tempMusicTags: string[];
+  tempImgTags: string[];
+  // tempTags: string[];
+  setTempImgTags: (tempTags: string[]) => void;
+  setTempMusicTags: (tempTags: string[]) => void;
   book: Book;
   setBook: (book: Book) => void;
   styleOptions: styleOptions;

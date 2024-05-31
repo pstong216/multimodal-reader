@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { SettingsState, Book, Chapter } from "../types";
 const useStore = create<SettingsState>((set) => ({
+  tempMusicTags: [] as string[],
+  tempImgTags: [] as string[],
+  setTempImgTags: (tempImgTags: string[]) => set(() => ({ tempImgTags })),
+  setTempMusicTags: (tempMusicTags: string[]) => set(() => ({ tempMusicTags })),
   book: {
     id: "1",
     name: "",
@@ -26,10 +30,14 @@ const useStore = create<SettingsState>((set) => ({
   },
   setBook: (book: Book) => set(() => ({ book })),
   styleOptions: {
-    imgOptions: [""],
-    musicOptions: [""],
+    imgOptions: ["cartoon", "realism", "abstract"],
+    musicOptions: ["raindrop", "birdsong", "piano"],
   },
-
+  theme: {
+    bgImg: "",
+    fontFamily: "",
+    fontColor: "",
+  },
   language: "english",
   showToolBar: false,
   fontSize: 1,

@@ -1,39 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+// import Sound from 'react-native-sound';
+import { Audio } from 'expo-av';
+
+import useSettingState from '../../stores/useSettingsStore';
 
 interface TagInputProps {
   tags: string[];
-  onTagsChange: (tags: string[]) => void;
+  onTagsChange: (tags: string) => void;
 }
 
+
 const TagInput: React.FC<TagInputProps> = ({ tags, onTagsChange }) => {
+
   const [tag, setTag] = useState('');
 
   const handleAddTag = () => {
     if (tag.length > 0) {
-      onTagsChange([...tags, tag]);
+      onTagsChange(tag);
       setTag('');
     }
   };
 
-  const handleRemoveTag = (index: number) => {
-    const newTags = [...tags];
-    newTags.splice(index, 1);
-    onTagsChange(newTags);
-  };
+
+
+
+
 
   return (
     <View style={styles.container}>
-      <View style={styles.tagContainer}>
-        {tags.map((tag, index) => (
-          <View key={index} style={styles.tag}>
-            <Text style={styles.tagText}>{tag}</Text>
-            <TouchableOpacity onPress={() => handleRemoveTag(index)}>
-              <Text style={styles.removeTag}>x</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
+
       <TextInput
         style={styles.input}
         value={tag}
@@ -41,12 +37,31 @@ const TagInput: React.FC<TagInputProps> = ({ tags, onTagsChange }) => {
         onSubmitEditing={handleAddTag}
         placeholder="Add a tag"
       />
+
+      <TouchableOpacity style={styles.button} onPress={handleAddTag}>
+        <Text style={styles.buttonText}>Add</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  button: {
+    // width: '10%',
+    // height: '10%',
+    backgroundColor: '#ccc',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 4
+
+  },
+  buttonText: {
+    color: '#000',
+    fontSize: 16
+  },
   container: {
+    flexDirection: 'row', // 设置为行方向以使输入框和按钮水平排列
     marginVertical: 12,
   },
   tagContainer: {
@@ -69,11 +84,14 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   input: {
+    flex: 1, // 输入框占据剩余空间，确保最大可能的输入空间
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 4,
     padding: 8,
-    marginTop: 8,
+
+    marginRight: 8, // 在输入框和按钮之间提供一定的间距
+    // marginTop: 8,
   },
 });
 
