@@ -39,7 +39,7 @@ export interface SettingsState {
   setParaSpacing: (paraSpacing: number) => void;
   setBackImg: (backImg: string) => void;
   setTurnOver: (turnOver: string) => void;
-  setSelectedButton: (selectedButton: string) => void;
+  setSelectedButton: (selectedButton: string | null) => void;
   setShowToolBar: (showToolBar: boolean) => void;
   setFontSize: (fontSize: number) => void;
   setFontFamily: (fontFamily: string) => void;
@@ -53,14 +53,15 @@ export type RootStackParamList = {
   Reading: { bookId: string }; // 'Reading' 屏幕接受一个参数 userId
 };
 export type styleOptions = {
-  imgOptions: string[],
-  musicOptions: string[]
-}
-export type readingDisplay = {//阅读时小功能
+  imgOptions: string[];
+  musicOptions: string[];
+};
+export type readingDisplay = {
+  //阅读时小功能
   // time: timestamp,
-  currentPage: string,
-  totalPage: string,
-}
+  currentPage: string;
+  totalPage: string;
+};
 
 export interface BookCardProps {
   bookName: string;
@@ -94,7 +95,7 @@ export interface MultiModel {
   musics: MusicGc[];
 }
 
-export interface Paragraph {
+export interface ParagraphType {
   bookId: string;
   id: string;
   content: string;
@@ -105,7 +106,7 @@ export interface Paragraph {
 export interface Chapter {
   id: string;
   name: string;
-  paragraphs: Paragraph[];
+  paragraphs: ParagraphType[];
   bgm?: string; //bgm文字描述
   music?: MusicGc; // 章节bgm
 }
@@ -145,4 +146,12 @@ export interface modalSettingState {
   modalVisible: boolean;
   setGlobalTextSetting: (globalTextSetting: boolean) => void;
   setModalVisible: (modalVisible: boolean) => void;
+}
+
+export interface ParaProps extends ParagraphType {
+  width: number;
+  height: number;
+  context: string;
+  handleGenerateImage: (selectedText: string) => void;
+  handleGenerateMusic: (selectedText: string) => void;
 }
