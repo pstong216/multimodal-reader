@@ -56,6 +56,8 @@ export type RootStackParamList = {
   Home: undefined; // 'Home' 屏幕不接受任何参数
   Setting: undefined; // 'Setting' 屏幕不接受任何参数
   Reading: { bookId: string }; // 'Reading' 屏幕接受一个参数 userId
+  Multimodal: undefined;
+  Pic: { url: string; text: string }; //’Pic'显示图片
 };
 export type styleOptions = {
   imgOptions: string[];
@@ -157,6 +159,6 @@ export interface ParaProps extends ParagraphType {
   width: number;
   height: number;
   context: string;
-  handleGenerateImage: (selectedText: string) => void;
+  handleGenerateImage: (selectedText: string, context: string) => void;
   handleGenerateMusic: (selectedText: string) => void;
 }

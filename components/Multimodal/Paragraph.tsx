@@ -21,7 +21,7 @@ export default function Paragraph(props: ParaProps) {
   const { fontColor, book, fontSize, fontFamily, leading, margin, background } =
     store;
   const navigation =
-    useNavigation<StackNavigationProp<RootStackParamList, "Home">>();
+    useNavigation<StackNavigationProp<RootStackParamList, "Reading">>();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [showPopover, setShowPopover] = useState(false);
   const touchable = useRef();
@@ -147,17 +147,20 @@ export default function Paragraph(props: ParaProps) {
               flexDirection: "row",
               columnGap: 0,
               justifyContent: "flex-end",
-              marginTop: -20,
+              // marginTop:,
             },
           ]}
         >
           {props.imgs.map((img) => {
             return (
               <TouchableOpacity
+                key={img.id}
                 style={styles.multiModeButton}
                 onPress={() => {
-                  //TODO:点击后跳转到图片展示页
-                  navigation.navigate("Setting");
+                  navigation.navigate("Pic", {
+                    url: img.url,
+                    text: props.content,
+                  });
                 }}
               >
                 <ImgIcon />
@@ -168,10 +171,7 @@ export default function Paragraph(props: ParaProps) {
             return (
               <TouchableOpacity
                 style={styles.multiModeButton}
-                onPress={() => {
-                  //TODO:点击后播放音乐
-                  navigation.navigate("Setting");
-                }}
+                onPress={() => {}}
               >
                 <MusicIcon />
               </TouchableOpacity>
@@ -183,25 +183,39 @@ export default function Paragraph(props: ParaProps) {
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
         >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
+          {/* <Pressable onPress={() => setModalVisible(false)}> */}
+          <View
+            style={styles.modalContainer}
+            onTouchStart={() => setModalVisible(false)}
+          >
+            <View
+              style={styles.modalContent}
+              onTouchStart={(e) => e.stopPropagation()}
+            >
               <TouchableOpacity onPress={handleMeaning} style={styles.button}>
                 <Text style={styles.buttonText}>Explaination</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => props.handleGenerateImage}
+                onPress={async () => {
+                  props.handleGenerateImage(props.content, props.context);
+                  setModalVisible(false);
+                }}
                 style={styles.button}
               >
                 <Text style={styles.buttonText}>Genarate Image</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => props.handleGenerateMusic}
+                onPress={() => {
+                  props.handleGenerateMusic(props.content);
+                  setModalVisible(false);
+                }}
                 style={styles.button}
               >
                 <Text style={styles.buttonText}>Genarate Music</Text>
               </TouchableOpacity>
             </View>
           </View>
+          {/* </Pressable> */}
         </Modal>
       </View>
     </>

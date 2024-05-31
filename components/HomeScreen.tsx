@@ -20,10 +20,11 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { parseText } from "../utils/textParser";
 import useSettingStore from "../stores/useSettingsStore";
-import Paragraph from "./Multimodal/Paragraph";
 const { width, height } = Dimensions.get("window");
+import { useBookStore } from "../stores/bookStore";
 
 const HomeScreen = () => {
+  const bookStore = useBookStore();
   const [books, setBooks] = useState<Book[]>([]);
   const { setBook, book } = useSettingStore();
   const navigation =
@@ -48,6 +49,7 @@ const HomeScreen = () => {
         const bookObj: Book = JSON.parse(fileContent);
         newBooks.push(bookObj);
       }
+      bookStore.setBooks([...newBooks]);
       setBooks([...newBooks]);
     } catch (err) {
       Alert.alert("Error", String(err));

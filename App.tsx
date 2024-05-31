@@ -8,7 +8,9 @@ import HomeScreen from "./components/HomeScreen";
 import ReadingScreen from "./components/ReadingScreen";
 import SettingScreen from "./components/SettingScreen";
 import Multimodal from "./components/Multimodal";
-const Stack = createStackNavigator();
+import PicScreen from "./components/PicScreen";
+import { RootStackParamList } from "./types";
+const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
@@ -18,6 +20,7 @@ const App = () => {
         <Stack.Screen name="Reading" component={ReadingScreen} />
         <Stack.Screen name="Setting" component={SettingScreen} />
         <Stack.Screen name="Multimodal" component={Multimodal} />
+        <Stack.Screen name="Pic" component={PicScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

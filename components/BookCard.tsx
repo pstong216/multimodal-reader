@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    width: "fit-content",
+    minWidth: 0,
+    // width: 50,
   },
   bookProgress: {
     color: "#00000099",
