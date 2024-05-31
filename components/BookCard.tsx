@@ -38,7 +38,7 @@ const BookCard: FC<BookCardProps> = ({
             {bookName}
           </Text>
           <Text style={styles.bookProgress}>
-            {progress == 0 ? "" : progress + "%"}
+            {cardType === "add" ? "" : progress + "%"}
           </Text>
         </View>
       </View>

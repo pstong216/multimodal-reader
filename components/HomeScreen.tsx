@@ -20,6 +20,7 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { parseText } from "../utils/textParser";
 import useSettingStore from "../stores/useSettingsStore";
+import Paragraph from "./Multimodal/Paragraph";
 const { width, height } = Dimensions.get("window");
 
 const HomeScreen = () => {
@@ -48,7 +49,6 @@ const HomeScreen = () => {
         newBooks.push(bookObj);
       }
       setBooks([...newBooks]);
-
     } catch (err) {
       Alert.alert("Error", String(err));
     }
@@ -103,9 +103,8 @@ const HomeScreen = () => {
                 onPress={() => {
                   navigation.navigate("Reading", { bookId: book.id });
                   const bookIndex = books.findIndex((b) => b.id === book.id);
-                  setBook(books[bookIndex]);//在store中设置当前书籍
-                }
-                }
+                  setBook(books[bookIndex]); //在store中设置当前书籍
+                }}
               />
             );
           })}
