@@ -3,7 +3,7 @@ import OpenAI from "openai";
 import config from "../config/aiConfig";
 
 // ai 生图
-async function generateImg(prompt: string): Promise<string> {
+export async function generateImg(prompt: string): Promise<string> {
   const openai = new OpenAI(config);
   const res = await openai.images.generate({
     model: "dall-e-3",
@@ -16,7 +16,7 @@ async function generateImg(prompt: string): Promise<string> {
 
 // 封装后的 ai 调用函数
 //context 需要以固定格式作为参数，使用时可参见 https://platform.openai.com/docs/guides/text-generation/chat-completions-api
-async function chat(
+export async function chat(
   context: OpenAI.Chat.Completions.ChatCompletionMessageParam[]
 ): Promise<string> {
   const openai = new OpenAI(config);
@@ -30,7 +30,7 @@ async function chat(
 }
 
 // ai 翻译（如有需要）
-async function translate(language: string, text: string) {
+export async function translate(language: string, text: string) {
   const context = [
     {
       role: "system",

@@ -21,8 +21,10 @@ import * as FileSystem from "expo-file-system";
 import { parseText } from "../utils/textParser";
 import useSettingStore from "../stores/useSettingsStore";
 const { width, height } = Dimensions.get("window");
+import { useBookStore } from "../stores/bookStore";
 
 const HomeScreen = () => {
+  const bookStore = useBookStore();
   const [books, setBooks] = useState<Book[]>([]);
   const { setBook, book } = useSettingStore();
   const navigation =
@@ -47,8 +49,8 @@ const HomeScreen = () => {
         const bookObj: Book = JSON.parse(fileContent);
         newBooks.push(bookObj);
       }
+      bookStore.setBooks([...newBooks]);
       setBooks([...newBooks]);
-
     } catch (err) {
       Alert.alert("Error", String(err));
     }
@@ -103,9 +105,8 @@ const HomeScreen = () => {
                 onPress={() => {
                   navigation.navigate("Reading", { bookId: book.id });
                   const bookIndex = books.findIndex((b) => b.id === book.id);
-                  setBook(books[bookIndex]);//在store中设置当前书籍
-                }
-                }
+                  setBook(books[bookIndex]); //在store中设置当前书籍
+                }}
               />
             );
           })}

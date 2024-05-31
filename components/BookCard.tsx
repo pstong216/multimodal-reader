@@ -38,7 +38,7 @@ const BookCard: FC<BookCardProps> = ({
             {bookName}
           </Text>
           <Text style={styles.bookProgress}>
-            {progress == 0 ? "" : progress + "%"}
+            {cardType === "add" ? "" : progress + "%"}
           </Text>
         </View>
       </View>
@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    width: "fit-content",
+    minWidth: 0,
+    // width: 50,
   },
   bookProgress: {
     color: "#00000099",
